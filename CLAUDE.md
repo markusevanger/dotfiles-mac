@@ -19,11 +19,15 @@ Find out what the user actually wants before running anything:
    `brew bundle install` against it blindly. The terminal-relevant subset is:
 
    ```
-   tmux starship fnm pnpm neovim bat lsd fzf gh btop television
-   zsh-syntax-highlighting zsh-autosuggestions
+   tmux starship spaceship fnm pnpm neovim bat lsd fzf gh btop television
+   fastfetch zsh-syntax-highlighting zsh-autosuggestions
    ```
    Plus casks: `ghostty`. The `0xProtoNerdFontMono` font is required by the
    Ghostty config — install a Nerd Font or change `font-family`.
+
+   Both `starship` and `spaceship` are listed because `.zshrc` sources both
+   and will error on startup if either is missing. See the quirks section —
+   the honest fix is to pick one and delete the other line.
 
 ## Machine-specific values that WILL break elsewhere
 
@@ -54,7 +58,7 @@ config paths.
 ## Known quirks in this config, not things to reproduce
 
 - **Two prompts are loaded.** `.zshrc` line 6 runs `starship init`, line 134
-  sources Homebrew's `spaceship.zsh`. The later one wins, so starship is
+  sources Homebrew's `spaceship.zsh`. The latter wins, so starship is
   effectively dead and `~/.config/starship.toml` is empty. Pick one prompt.
 - **`ZSH_THEME="robbyrussell"`** is also set but overridden by the above.
 - **`alias cat="bat"`** breaks scripts that pipe into `cat`. Deliberate, but

@@ -1,6 +1,6 @@
 # dotfiles-mac
 
-👋 Velkommen til mitt terminal setup for jobb-macen min! Her finner du detaljer om alt jeg bruker. Hovedsaklig jobber jeg mest med claude og webdev greier, så mye er veldig spesifikt for akkuratt min arbeidsflyt. Ta inspirasjon! 
+👋 Velkommen til mitt terminal setup for jobb-macen min! Her finner du detaljer om alt jeg bruker. Hovedsakelig jobber jeg med Claude og webdev-greier, så mye er veldig spesifikt for akkurat min arbeidsflyt. Ta inspirasjon!
 
 ![Ghostty running tmux with fastfetch, asciiquarium and Claude Code](screenshot.png)
 
