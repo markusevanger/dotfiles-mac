@@ -1,14 +1,14 @@
-# dotfiles
+# dotfiles-mac
 
-macOS terminal setup: Ghostty + zsh + tmux, plus the supporting bits.
+👋 Velkommen til mitt terminal setup for jobb-macen min! Her finner du detaljer om alt jeg bruker. Hovedsaklig jobber jeg mest med claude og webdev greier, så mye er veldig spesifikt for akkuratt min arbeidsflyt. Ta inspirasjon! 
 
 Every file here is symlinked into `$HOME`, so editing `~/.zshrc` edits this repo.
 
 ## Install on a new Mac
 
 ```sh
-git clone https://github.com/<user>/dotfiles ~/dotfiles
-cd ~/dotfiles
+git clone https://github.com/<user>/dotfiles-mac ~/dotfiles-mac
+cd ~/dotfiles-mac
 ./install.sh --dry-run      # see what it would touch
 ./install.sh --bootstrap    # install prerequisites, then symlink
 exec zsh
@@ -42,7 +42,7 @@ containing key-shaped strings; `install.sh` enables it via `core.hooksPath`.
 ## Adding a config
 
 ```sh
-mv ~/.config/foo/config ~/dotfiles/foo/.config/foo/config
+mv ~/.config/foo/config ~/dotfiles-mac/foo/.config/foo/config
 ./install.sh foo
 ```
 
