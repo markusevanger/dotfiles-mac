@@ -2,12 +2,14 @@
 
 👋 Velkommen til mitt terminal setup for jobb-macen min! Her finner du detaljer om alt jeg bruker. Hovedsaklig jobber jeg mest med claude og webdev greier, så mye er veldig spesifikt for akkuratt min arbeidsflyt. Ta inspirasjon! 
 
+![Ghostty running tmux with fastfetch, asciiquarium and Claude Code](screenshot.png)
+
 Every file here is symlinked into `$HOME`, so editing `~/.zshrc` edits this repo.
 
 ## Install on a new Mac
 
 ```sh
-git clone https://github.com/<user>/dotfiles-mac ~/dotfiles-mac
+git clone https://github.com/markusevanger/dotfiles-mac ~/dotfiles-mac
 cd ~/dotfiles-mac
 ./install.sh --dry-run      # see what it would touch
 ./install.sh --bootstrap    # install prerequisites, then symlink
