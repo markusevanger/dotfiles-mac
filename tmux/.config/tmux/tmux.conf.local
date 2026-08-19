@@ -1,0 +1,237 @@
+# -- session creation ----------------------------------------------------------
+
+tmux_conf_new_session_prompt=false
+tmux_conf_new_session_retain_current_path=false
+
+
+# -- windows & pane creation ---------------------------------------------------
+
+tmux_conf_new_window_retain_current_path=false
+tmux_conf_new_window_reconnect_ssh=false
+tmux_conf_new_pane_retain_current_path=true
+tmux_conf_new_pane_reconnect_ssh=false
+
+
+# -- display -------------------------------------------------------------------
+
+tmux_conf_24b_colour=auto
+
+
+# -- theming -------------------------------------------------------------------
+
+tmux_conf_theme=enabled
+
+# Catppuccin Mocha palette
+tmux_conf_theme_colour_1="#1e1e2e"    # base (dark bg)
+tmux_conf_theme_colour_2="#313244"    # surface0
+tmux_conf_theme_colour_3="#6c7086"    # overlay0 (muted text)
+tmux_conf_theme_colour_4="#89b4fa"    # blue (accent)
+tmux_conf_theme_colour_5="#f9e2af"    # yellow
+tmux_conf_theme_colour_6="#1e1e2e"    # base
+tmux_conf_theme_colour_7="#cdd6f4"    # text
+tmux_conf_theme_colour_8="#1e1e2e"    # base
+tmux_conf_theme_colour_9="#a6e3a1"    # green
+tmux_conf_theme_colour_10="#cba6f7"   # mauve
+tmux_conf_theme_colour_11="#89b4fa"   # blue
+tmux_conf_theme_colour_12="#6c7086"   # overlay0
+tmux_conf_theme_colour_13="#cdd6f4"   # text
+tmux_conf_theme_colour_14="#1e1e2e"   # base
+tmux_conf_theme_colour_15="#1e1e2e"   # base
+tmux_conf_theme_colour_16="#f38ba8"   # red
+tmux_conf_theme_colour_17="#cdd6f4"   # text
+
+# window style
+tmux_conf_theme_window_fg="default"
+tmux_conf_theme_window_bg="default"
+
+# no focused pane highlight
+tmux_conf_theme_highlight_focused_pane=false
+
+# pane borders — subtle
+tmux_conf_theme_pane_border_style=thin
+tmux_conf_theme_pane_border="$tmux_conf_theme_colour_2"
+tmux_conf_theme_pane_active_border="$tmux_conf_theme_colour_4"
+%if #{>=:#{version},3.2}
+tmux_conf_theme_pane_active_border="#{?pane_in_mode,$tmux_conf_theme_colour_5,#{?synchronize-panes,$tmux_conf_theme_colour_16,$tmux_conf_theme_colour_4}}"
+%endif
+
+# pane indicators
+tmux_conf_theme_pane_indicator="$tmux_conf_theme_colour_4"
+tmux_conf_theme_pane_active_indicator="$tmux_conf_theme_colour_4"
+
+# message style
+tmux_conf_theme_message_fg="$tmux_conf_theme_colour_1"
+tmux_conf_theme_message_bg="$tmux_conf_theme_colour_5"
+tmux_conf_theme_message_attr="bold"
+
+# command prompt style
+tmux_conf_theme_message_command_fg="$tmux_conf_theme_colour_5"
+tmux_conf_theme_message_command_bg="$tmux_conf_theme_colour_1"
+tmux_conf_theme_message_command_attr="bold"
+
+# mode style (copy mode etc)
+tmux_conf_theme_mode_fg="$tmux_conf_theme_colour_1"
+tmux_conf_theme_mode_bg="$tmux_conf_theme_colour_5"
+tmux_conf_theme_mode_attr="bold"
+
+# status bar base
+tmux_conf_theme_status_fg="$tmux_conf_theme_colour_3"
+tmux_conf_theme_status_bg="$tmux_conf_theme_colour_1"
+tmux_conf_theme_status_attr="none"
+
+# terminal title
+tmux_conf_theme_terminal_title="#S · #W"
+
+# inactive windows — per-index color coding
+# 1=orange 2=green 3=mauve 4=yellow 5=pink 6=teal default=gray
+tmux_conf_theme_window_status_fg="$tmux_conf_theme_colour_3"
+tmux_conf_theme_window_status_bg="$tmux_conf_theme_colour_1"
+tmux_conf_theme_window_status_attr="none"
+tmux_conf_theme_window_status_format="#{?#{==:#{window_index},1},#[fg=#d97a5b bold]#I #W,#{?#{==:#{window_index},2},#[fg=#a6e3a1 bold]#I #W,#{?#{==:#{window_index},3},#[fg=#cba6f7 bold]#I #W,#{?#{==:#{window_index},4},#[fg=#f9e2af bold]#I #W,#{?#{==:#{window_index},5},#[fg=#f38ba8 bold]#I #W,#{?#{==:#{window_index},6},#[fg=#94e2d5 bold]#I #W,#[fg=#6c7086]#I #W}}}}}}"
+
+# active window — per-index colored background
+tmux_conf_theme_window_status_current_fg="$tmux_conf_theme_colour_1"
+tmux_conf_theme_window_status_current_bg="$tmux_conf_theme_colour_4"
+tmux_conf_theme_window_status_current_attr="bold"
+tmux_conf_theme_window_status_current_format="#{?#{==:#{window_index},1},#[fg=#1e1e2e bg=#d97a5b] #I #W ,#{?#{==:#{window_index},2},#[fg=#1e1e2e bg=#a6e3a1] #I #W ,#{?#{==:#{window_index},3},#[fg=#1e1e2e bg=#cba6f7] #I #W ,#{?#{==:#{window_index},4},#[fg=#1e1e2e bg=#f9e2af] #I #W ,#{?#{==:#{window_index},5},#[fg=#1e1e2e bg=#f38ba8] #I #W ,#{?#{==:#{window_index},6},#[fg=#1e1e2e bg=#94e2d5] #I #W ,#[fg=#1e1e2e bg=#89b4fa] #I #W }}}}}}"
+
+# activity/bell — visible highlight for background activity
+tmux_conf_theme_window_status_activity_fg="$tmux_conf_theme_colour_10"
+tmux_conf_theme_window_status_activity_bg="$tmux_conf_theme_colour_2"
+tmux_conf_theme_window_status_activity_attr="bold"
+
+tmux_conf_theme_window_status_bell_fg="$tmux_conf_theme_colour_5"
+tmux_conf_theme_window_status_bell_bg="default"
+tmux_conf_theme_window_status_bell_attr="blink,bold"
+
+# last window — slightly highlighted
+tmux_conf_theme_window_status_last_fg="$tmux_conf_theme_colour_4"
+tmux_conf_theme_window_status_last_bg="$tmux_conf_theme_colour_2"
+tmux_conf_theme_window_status_last_attr="none"
+
+# flat separators
+tmux_conf_theme_left_separator_main=""
+tmux_conf_theme_left_separator_sub="|"
+tmux_conf_theme_right_separator_main=""
+tmux_conf_theme_right_separator_sub="|"
+
+# status content — dev focused, minimal
+tmux_conf_theme_status_left=" #S | #{pretty_pane_current_path} "
+tmux_conf_theme_status_right=" #{prefix}#(~/.config/tmux/dev-ports.sh) %R "
+
+# status left style (session = green, path = surface)
+tmux_conf_theme_status_left_fg="$tmux_conf_theme_colour_1,$tmux_conf_theme_colour_7"
+tmux_conf_theme_status_left_bg="$tmux_conf_theme_colour_9,$tmux_conf_theme_colour_2"
+tmux_conf_theme_status_left_attr="bold,none"
+
+# status right style
+tmux_conf_theme_status_right_fg="$tmux_conf_theme_colour_7"
+tmux_conf_theme_status_right_bg="$tmux_conf_theme_colour_2"
+tmux_conf_theme_status_right_attr="none"
+
+# indicators
+tmux_conf_theme_pairing="⚇"
+tmux_conf_theme_pairing_fg="none"
+tmux_conf_theme_pairing_bg="none"
+tmux_conf_theme_pairing_attr="none"
+
+tmux_conf_theme_prefix="⌨"
+tmux_conf_theme_prefix_fg="$tmux_conf_theme_colour_5"
+tmux_conf_theme_prefix_bg="none"
+tmux_conf_theme_prefix_attr="none"
+
+tmux_conf_theme_mouse="↗"
+tmux_conf_theme_mouse_fg="none"
+tmux_conf_theme_mouse_bg="none"
+tmux_conf_theme_mouse_attr="none"
+
+tmux_conf_theme_root="!"
+tmux_conf_theme_root_fg="$tmux_conf_theme_colour_16"
+tmux_conf_theme_root_bg="none"
+tmux_conf_theme_root_attr="bold"
+
+tmux_conf_theme_synchronized="⚏"
+tmux_conf_theme_synchronized_fg="none"
+tmux_conf_theme_synchronized_bg="none"
+tmux_conf_theme_synchronized_attr="none"
+
+# battery (disabled from status bar but kept for reference)
+tmux_conf_battery_bar_symbol_full="◼"
+tmux_conf_battery_bar_symbol_empty="◻"
+tmux_conf_battery_bar_length="auto"
+tmux_conf_battery_bar_palette="gradient"
+tmux_conf_battery_hbar_palette="gradient"
+tmux_conf_battery_vbar_palette="gradient"
+tmux_conf_battery_status_charging="↑"
+tmux_conf_battery_status_discharging="↓"
+
+# clock
+tmux_conf_theme_clock_colour="$tmux_conf_theme_colour_4"
+tmux_conf_theme_clock_style="24"
+
+
+# -- clipboard -----------------------------------------------------------------
+
+tmux_conf_copy_to_os_clipboard=true
+
+
+# -- urlscan -------------------------------------------------------------------
+
+tmux_conf_urlscan_options="--compact --dedupe"
+
+
+# -- user customizations -------------------------------------------------------
+
+# increase history size
+set -g history-limit 50000
+
+# start with mouse mode enabled
+set -g mouse on
+
+# wheel scroll uses tmux's built-in default binding (copy-mode -e) -- no override.
+# if the server starts aborting on scroll again, it's the copy-mode double-free
+# (tmux issues 4777 / 5302 / 5385, macOS arm64, needs days of uptime to trigger).
+
+# keep user-set window names (stop processes from renaming them to version strings etc)
+set -g allow-rename off
+set -g automatic-rename off
+
+# faster escape (important for vim/neovim)
+set -sg escape-time 0
+
+# display a message after toggling mouse support
+bind m run "cut -c3- '#{TMUX_CONF}' | sh -s _toggle_mouse" \; display 'mouse #{?#{mouse},on,off}'
+
+# move status line to top (uncomment if you prefer)
+#set -g status-position top
+
+# monitor background windows for activity (triggers color change in status bar)
+set -g monitor-activity on
+set -g visual-activity off
+
+# fast status refresh for window indicators (⏳/✓)
+set -g status-interval 2
+
+
+# -- tpm -----------------------------------------------------------------------
+
+tmux_conf_update_plugins_on_launch=true
+tmux_conf_update_plugins_on_reload=true
+tmux_conf_uninstall_plugins_on_reload=true
+
+# uncomment to enable plugins:
+#set -g @plugin 'tmux-plugins/tmux-resurrect'
+#set -g @plugin 'tmux-plugins/tmux-continuum'
+#set -g @continuum-restore 'on'
+
+
+# -- custom variables ----------------------------------------------------------
+
+set -g extended-keys on
+
+# /!\ do not remove the following line
+# EOF
+#
+# "$@"
+# /!\ do not remove the previous line
+# #     do not write below this line

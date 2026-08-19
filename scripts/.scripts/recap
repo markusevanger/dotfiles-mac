@@ -1,0 +1,65 @@
+#!/bin/bash
+# Recap: show your git commits from the last N days, grouped by date.
+# Usage: recap [days]  (default: 10)
+
+DAYS="${1:-10}"
+REPOS_DIR="$HOME/jobb/repos"
+AUTHOR_EMAIL="markus@kult.design"
+SINCE="$(date -v-${DAYS}d +%Y-%m-%d)"
+
+# Colors
+BOLD=$'\033[1m'
+DIM=$'\033[2m'
+CYAN=$'\033[36m'
+YELLOW=$'\033[33m'
+GREEN=$'\033[32m'
+MAGENTA=$'\033[35m'
+BLUE=$'\033[34m'
+RESET=$'\033[0m'
+
+# Header
+printf "\n${BOLD}${CYAN}󰃭 Recap${RESET} ${DIM}·${RESET} last ${BOLD}%s${RESET} days ${DIM}(since %s)${RESET}\n" "$DAYS" "$SINCE"
+printf "${DIM}󰒺 sorted newest → oldest${RESET}\n\n"
+
+# Collect all commits: "YYYY-MM-DD HH:MM | repo-name | subject"
+commits=""
+while IFS= read -r gitdir; do
+  repo_path="${gitdir%/.git}"
+  repo_name="${repo_path#$REPOS_DIR/}"
+  log=$(git -C "$repo_path" log --author="$AUTHOR_EMAIL" --since="$SINCE" \
+    --format="%ai|$repo_name|%s" --all 2>/dev/null)
+  if [[ -n "$log" ]]; then
+    commits+="$log"$'\n'
+  fi
+done < <(find "$REPOS_DIR" -maxdepth 3 -name ".git" -type d 2>/dev/null)
+
+if [[ -z "${commits// /}" ]]; then
+  printf "${YELLOW} No commits found in the last %s days.${RESET}\n" "$DAYS"
+  exit 0
+fi
+
+# Sort by datetime descending
+sorted=$(echo "$commits" | sed '/^$/d' | sort -r)
+
+# Count commits
+total=$(echo "$sorted" | wc -l | tr -d ' ')
+printf "${DIM}󰜘 %s commits across all repos${RESET}\n\n" "$total"
+
+current_date=""
+while IFS='|' read -r datetime repo subject; do
+  date_part="${datetime%% *}"
+  time_part="${datetime#* }"
+  time_part="${time_part%% *}"
+  time_short="${time_part%:*}"
+
+  if [[ "$date_part" != "$current_date" ]]; then
+    weekday=$(date -jf "%Y-%m-%d" "$date_part" "+%A" 2>/dev/null)
+    [[ -n "$current_date" ]] && echo ""
+    printf "${BOLD}${MAGENTA} %s${RESET} ${DIM}%s${RESET}\n" "$weekday" "$date_part"
+    current_date="$date_part"
+  fi
+
+  printf "  ${DIM}${RESET} ${CYAN}%s${RESET}  ${GREEN}󰊢 %-28s${RESET} ${RESET}%s${RESET}\n" "$time_short" "$repo" "$subject"
+done <<< "$sorted"
+
+echo ""

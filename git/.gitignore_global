@@ -1,0 +1,5 @@
+# Global gitignore (git core.excludesfile) — applies to every repo on this machine.
+
+# Claude / superpowers workflow artifacts (design specs, implementation plans).
+# These are agent scaffolding, not product code — never commit them anywhere.
+docs/superpowers/

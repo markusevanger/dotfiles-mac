@@ -1,0 +1,61 @@
+#!/usr/bin/env bash
+# Blocks a commit that stages anything looking like a credential.
+# This repo is public; the cost of a false positive is one --no-verify.
+# Enabled by install.sh via: git config core.hooksPath hooks
+
+set -uo pipefail
+
+staged=$(git diff --cached --name-only --diff-filter=ACM)
+[[ -z "$staged" ]] && exit 0
+
+fail=0
+report() { echo "  $1"; fail=1; }
+
+echo "pre-commit: scanning staged changes for secrets"
+
+# 1. Filenames that should never be committed here
+while IFS= read -r f; do
+  case "$f" in
+    *.pem|*.key|*.p12|*.pfx|.env|.env.*|*id_rsa*|*id_ed25519*|.netrc|*.npmrc|*hosts.yml)
+      report "blocked filename: $f" ;;
+  esac
+done <<< "$staged"
+
+# 2. Content patterns in the staged diff (added lines only)
+added=$(git diff --cached -U0 | grep '^+' | grep -v '^+++' || true)
+
+scan() {
+  local label="$1" pattern="$2"
+  local hits
+  hits=$(printf '%s\n' "$added" | grep -inE "$pattern" | head -3 || true)
+  [[ -n "$hits" ]] && report "$label: $hits"
+}
+
+scan "private key block"   'BEGIN [A-Z ]*PRIVATE KEY'
+scan "AWS access key"      'AKIA[0-9A-Z]{16}'
+scan "GitHub token"        '(ghp|gho|ghu|ghs|ghr)_[A-Za-z0-9]{20,}|github_pat_[A-Za-z0-9_]{20,}'
+scan "Slack token"         'xox[abposr]-[A-Za-z0-9-]{10,}'
+scan "OpenAI/Anthropic key" '\b(sk|sk-ant)-[A-Za-z0-9_-]{20,}'
+scan "Google API key"      'AIza[0-9A-Za-z_-]{35}'
+scan "bearer token"        'Authorization:[[:space:]]*(Bearer|Basic)[[:space:]]+[A-Za-z0-9._~+/=-]{16,}'
+# Assignment of a long opaque value to a secret-ish name.
+# Deliberately requires 16+ literal chars so `alias secret="openssl rand ..."`
+# and `export FOO=$(cmd)` do not trip it.
+scan "hardcoded secret"    '(TOKEN|SECRET|PASSWD|PASSWORD|API_?KEY|ACCESS_?KEY|PRIVATE_?KEY|CLIENT_?SECRET)[A-Z_]*[[:space:]]*=[[:space:]]*['"'"'"]?[A-Za-z0-9/+_=.-]{16,}'
+
+if [[ $fail -ne 0 ]]; then
+  cat >&2 <<'MSG'
+
+COMMIT BLOCKED — the above looks like a credential.
+
+  Move it to a machine-local file that is gitignored:
+      echo 'export MY_TOKEN=...' >> ~/.zshrc.local
+
+  If this is a false positive:
+      git commit --no-verify
+
+MSG
+  exit 1
+fi
+
+echo "pre-commit: clean"

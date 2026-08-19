@@ -1,0 +1,22 @@
+#!/bin/bash
+count=0
+echo "╭─────────────────────────────╮"
+echo "│  🔪 Dev Server Killer       │"
+echo "├─────────────────────────────┤"
+for port in 3000 3001 3333; do
+  pid=$(lsof -ti:$port 2>/dev/null)
+  if [[ -n "$pid" ]]; then
+    kill -9 $pid
+    echo "│  ✓ Port $port killed         │"
+    ((count++))
+  else
+    echo "│  · Port $port not running    │"
+  fi
+done
+echo "├─────────────────────────────┤"
+if [[ $count -eq 0 ]]; then
+  echo "│  💤 Nothing to kill          │"
+else
+  echo "│  🧹 Killed: $count process(es)       │"
+fi
+echo "╰─────────────────────────────╯"
